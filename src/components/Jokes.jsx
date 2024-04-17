@@ -1,13 +1,24 @@
 import { useState, useEffect } from "react";
-import Button from "./Button";
+// import Button from "./Button";
 import Axios from "axios";
 
-export default function Jokes() {
-  const getJoke = async () => {
-    const joke = await Axios(
-      "https://official-joke-api.appspot.com/random_joke"
-    );
-  };
-  getJoke();
-  return <></>;
+function Jokes() {
+  const [data, setData] = useState();
+
+  useEffect(() => {
+    const getJoke = async () => {
+      const joke = await Axios.get(import.meta.env.VITE_API_URL);
+      setData(joke);
+    };
+    getJoke();
+  }, []);
+
+  return (
+    <>
+      <h1>{data?.data.setup}</h1>
+      <h2>{data?.data.punchline}</h2>
+    </>
+  );
 }
+
+export default Jokes;
