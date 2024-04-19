@@ -1,24 +1,50 @@
-import { useState, useEffect } from "react";
-// import Button from "./Button";
+import { useState } from "react";
 import Axios from "axios";
 
 function Jokes() {
-  const [data, setData] = useState();
+  const [joke, setJoke] = useState({ setup: "", punchline: "" });
 
-  useEffect(() => {
-    const getJoke = async () => {
-      const joke = await Axios.get(import.meta.env.VITE_API_URL);
-      setData(joke);
-    };
-    getJoke();
-  }, []);
+  const fetchJoke = async () => {
+    try {
+      const response = await Axios.get(import.meta.env.VITE_API_URL);
+      setJoke(response.data); // Assuming the joke data is in response.data
+    } catch (err) {
+      console.error("Error fetching joke:", err);
+    }
+  };
 
   return (
-    <>
-      <h1>{data?.data.setup}</h1>
-      <h2>{data?.data.punchline}</h2>
-    </>
+    <div>
+      <h1>{joke.setup}</h1>
+      <h2>{joke.punchline}</h2>
+      <button onClick={fetchJoke}>Get Joke</button>
+    </div>
   );
 }
 
 export default Jokes;
+
+// import { useState, useEffect } from "react";
+// // import Button from "./Button";
+// import Axios from "axios";
+
+// function Jokes() {
+//   const [data, setData] = useState();
+
+//   useEffect(() => {
+//     const getJoke = async () => {
+//       const joke = await Axios.get(import.meta.env.VITE_API_URL);
+//       setData(joke.data);
+//     };
+//     getJoke();
+//   }, []);
+
+//   return (
+//     <>
+//       <h1>{data.setup}</h1>
+//       <h2>{data.punchline}</h2>
+//     </>
+//   );
+// }
+
+// export default Jokes;
